@@ -6,3 +6,5 @@ comments: true
 minItemsToShowToc: 0
 plugins:
   - jekyll-sitemap
+
+theme: jekyll-theme-merlot
