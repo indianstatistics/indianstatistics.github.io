@@ -7,4 +7,4 @@ minItemsToShowToc: 0
 plugins:
   - jekyll-sitemap
 
-theme: jekyll-theme-merlot
+theme: jekyll-theme-modernist
