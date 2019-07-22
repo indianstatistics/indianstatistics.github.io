@@ -1,0 +1,775 @@
+---
+layout: default
+title: "Consumer Expenditure"
+date: 2013-05-15
+up: "/socio-economic-conditions.html"
+home: "/index.html"
+---
+
+<div id="outline-container-org34aadba" class="outline-2">
+<h2 id="org34aadba"><a href="scripts/nss_schedule_01.html">Scripts to read unit-level NSS data on Consumer Expenditure</a></h2>
+<div class="outline-text-2" id="text-org34aadba">
+<p>
+These awk and shell scripts can be used to
+read NSS unit-level data and produce annotated databases out of them.
+The programmes are released under GNU GPL license. We are hosting
+these programmes for use by anyone who may be interested.
+</p>
+
+<p>
+<a href="scripts/nss_schedule_01.html">NSS, Schedule 1: Surveys of Consumer Expenditure</a>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgc3ea060" class="outline-2">
+<h2 id="orgc3ea060">NSSO Reports on consumer expenditure</h2>
+<div class="outline-text-2" id="text-orgc3ea060">
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subject</th>
+<th scope="col" class="org-right">Report number</th>
+<th scope="col" class="org-right">Round</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_135.pdf">Consumer Expenditure</a></td>
+<td class="org-right">135</td>
+<td class="org-right">17</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_138.pdf">Consumer Expenditure</a></td>
+<td class="org-right">138</td>
+<td class="org-right">16</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_142.pdf">Consumer Expenditure (preliminary)</a></td>
+<td class="org-right">142</td>
+<td class="org-right">18</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_151.pdf">Consumer expenditure (some selected items)</a></td>
+<td class="org-right">151</td>
+<td class="org-right">18</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_155.pdf">Consumer expenditure (some selected items)</a></td>
+<td class="org-right">155</td>
+<td class="org-right">18</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_184.pdf">Consumer expenditure</a></td>
+<td class="org-right">184</td>
+<td class="org-right">17</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_192.pdf">Consumer Expenditure</a></td>
+<td class="org-right">192</td>
+<td class="org-right">19</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_201_0.pdf">Household Consumer Expenditure Enterprise and Demographic Particulars</a></td>
+<td class="org-right">201</td>
+<td class="org-right">20</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_209.pdf">Consumer Expenditure</a></td>
+<td class="org-right">209</td>
+<td class="org-right">20</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_216.pdf">Consumer Expenditure</a></td>
+<td class="org-right">216</td>
+<td class="org-right">22</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_228_0.pdf">Consumer Expenditure</a></td>
+<td class="org-right">228</td>
+<td class="org-right">23</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_230.pdf">Consumer Expenditure (Preliminary)</a></td>
+<td class="org-right">230</td>
+<td class="org-right">21</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_231.pdf">Consumer Expenditure</a></td>
+<td class="org-right">231</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_235.pdf">Consumer Expenditure</a></td>
+<td class="org-right">235</td>
+<td class="org-right">24</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_239.pdf">Consumer Expenditure for Cultivator Households: Rural</a></td>
+<td class="org-right">239</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_240draft.pdf">Special table on consumer Expenditure</a></td>
+<td class="org-right">240</td>
+<td class="org-right">23</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_250.pdf">Consumer Expenditure for National Commission on Agriculture</a></td>
+<td class="org-right">250</td>
+<td class="org-right">23</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_251_0.pdf">Consumer Expenditure</a></td>
+<td class="org-right">251</td>
+<td class="org-right">23</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_269.pdf">Consumer Expenditure</a></td>
+<td class="org-right">269</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_271.pdf">Consumer Expenditure</a></td>
+<td class="org-right">271</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_284.pdf">Consumer expenditure</a></td>
+<td class="org-right">284</td>
+<td class="org-right">27</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_311-1.pdf">Consumer Expenditure</a></td>
+<td class="org-right">311/1</td>
+<td class="org-right">32</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_311_1.pdf">Second Quinquennial Survey on Consumer Expenditure</a></td>
+<td class="org-right">311</td>
+<td class="org-right">32</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_319.pdf">Consumer Expenditure</a></td>
+<td class="org-right">319</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_355-1.pdf">Consumer Expenditure</a></td>
+<td class="org-right">355/1</td>
+<td class="org-right">42</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_355-2.pdf">Consumer expenditure for all India Andhra Pradesh, Gujarat, Haryana, Himachal Pradesh, Jammu Kashmir, Karnataka, Kerala, Madhya</a></td>
+<td class="org-right">355/2</td>
+<td class="org-right">42</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_370-2.pdf">Consumer Expenditure (All India)</a></td>
+<td class="org-right">370/2</td>
+<td class="org-right">44</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_357.pdf">Distribution of Household by MPCE</a></td>
+<td class="org-right">357</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_360.pdf">Distribution of house hold by MPCE</a></td>
+<td class="org-right">360</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_387.pdf">Distribution of household and persons by household MPCE</a></td>
+<td class="org-right">387</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_370-1_DRAFT.pdf">Consumer expenditure (All India)</a></td>
+<td class="org-right">370/1 (DRAFT)</td>
+<td class="org-right">44 semi round-1</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_373-DRAFT.pdf">Report von the 4th Quinquennial survey on Consumer Expenditure</a></td>
+<td class="org-right">373</td>
+<td class="org-right">43</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_381.pdf">Third Annual survey on consumer Expenditure and Employment- Unemployment</a></td>
+<td class="org-right">381</td>
+<td class="org-right">45</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_383.pdf">Consumer Expenditure</a></td>
+<td class="org-right">383</td>
+<td class="org-right">43</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_384.pdf">Consumer Expenditure</a></td>
+<td class="org-right">384</td>
+<td class="org-right">43</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_385Draft.pdf">Consumer Expenditure</a></td>
+<td class="org-right">385</td>
+<td class="org-right">43</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/401_final.pdf">Key results on Household Consumer Expenditure,1993-94</a></td>
+<td class="org-right">401*</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/402_final.pdf">Level and Pattern of Consumer Expenditure</a></td>
+<td class="org-right">402*</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/436_final.pdf">Household Consumer Expenditure and Employment situation in India, 1994-95</a></td>
+<td class="org-right">436</td>
+<td class="org-right">51</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/440_final.pdf">Household Consumer Expenditure and Employment situation in India, 1994-95</a></td>
+<td class="org-right">440</td>
+<td class="org-right">52</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/442_final.pdf">Household Consumer Expenditure and Employment situation in India, 1997</a></td>
+<td class="org-right">442</td>
+<td class="org-right">53</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/448_final.pdf">Household Consumer Expenditure and Employment situation in India</a></td>
+<td class="org-right">448</td>
+<td class="org-right">54</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/453_final.pdf">Household Consumer Expenditure in India (July-December 1999)- Key results</a></td>
+<td class="org-right">453</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/454_final.pdf">Household Consumer Expenditure in India 1999-2000 - Key results</a></td>
+<td class="org-right">454*</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/457_final.pdf">Level and Pattern of Consumer Expenditure in India, 1999-2000</a></td>
+<td class="org-right">457*</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/474_final.pdf">Sources of household consumption in India, 1999-2000</a></td>
+<td class="org-right">474</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/476_final_0.pdf">Household Consumer Expenditure and Employment - Unemployment Situation in India, 2000-01</a></td>
+<td class="org-right">476</td>
+<td class="org-right">56</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/484_final.pdf">Household Consumer Expenditure and Employment-Unemployment Situation in India</a></td>
+<td class="org-right">484</td>
+<td class="org-right">58</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/505_final.pdf">Household Consumer Expenditure in India, January-June 2004</a></td>
+<td class="org-right">505</td>
+<td class="org-right">60</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/508_final.pdf">Level and Pattern of Consumer Expenditure, 2004-2005</a></td>
+<td class="org-right">508</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/514_final.pdf">Household Consumer Expenditure among Socio-Economic Groups:2004-2005</a></td>
+<td class="org-right">514</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/523_final.pdf">Household Consumer Expenditure in India, 2005-06</a></td>
+<td class="org-right">523</td>
+<td class="org-right">62</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/527_final.pdf">Household Consumer Expenditure in India, 2006-07</a></td>
+<td class="org-right">527</td>
+<td class="org-right">63</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/530_final.pdf">Household Consumer Expenditure in India, 2007-08</a></td>
+<td class="org-right">530</td>
+<td class="org-right">64</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/Corrigendum_NSS_REport_530.pdf">Household Consumer Expenditure in India, 2007-08 CORRIGENDUM</a></td>
+<td class="org-right">530<sub>Corr</sub></td>
+<td class="org-right">64</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/Report_KI_66_1.0_corrigendum_0.pdf">Key Indicators of Household Consumer Expenditure in India, 2009-10</a></td>
+<td class="org-right">NSS KI (66/1.0)</td>
+<td class="org-right">66</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/NSS_Report_538.pdf">Level and Pattern of Consumer Expenditure, 2009-10</a></td>
+<td class="org-right">538</td>
+<td class="org-right">66</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_Report-544.pdf">Household Consumer Expenditure across Socio-Economic Groups</a></td>
+<td class="org-right">544</td>
+<td class="org-right">66</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/KI-68th-HCE.pdf">Key Indicators of Household Consumer Expenditure in India, 2011-12</a></td>
+<td class="org-right">NSS KI (68/1.0)</td>
+<td class="org-right">68</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_555.pdf">Level and Pattern of Consumer Expenditure</a></td>
+<td class="org-right">555</td>
+<td class="org-right">68</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_562_27feb15.pdf">Household Consumer Expenditure across Socio-Economic Groups (July 2011-June 2012)</a></td>
+<td class="org-right">562</td>
+<td class="org-right">68</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/ki_durable_29june16.pdf">Key Indicators of Household Expenditure on Services and Durable Goods</a></td>
+<td class="org-right">NSS KI(72/1.5)</td>
+<td class="org-right">72</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/422_final_0.pdf">Differences in level of consumption among socio-economic groups</a></td>
+<td class="org-right">422</td>
+<td class="org-right">50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-orga3c1d67" class="outline-2">
+<h2 id="orga3c1d67">NSSO Reports on consumption of various goods and services in India</h2>
+<div class="outline-text-2" id="text-orga3c1d67">
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subject</th>
+<th scope="col" class="org-right">Report number</th>
+<th scope="col" class="org-right">Round</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/404_final.pdf">Consumption of some important commodities in India</a></td>
+<td class="org-right">404*</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/427_final.pdf">Consumption of tobacco in India, 1993-94</a></td>
+<td class="org-right">427</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/426_final.pdf">Use of durable goods by Indian households, 1993-94</a></td>
+<td class="org-right">426</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/461_final.pdf">Consumption of some important commodities in India, 1999-2000</a></td>
+<td class="org-right">461</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/472_final.pdf">Differences in level of consumption among socio-economic groups, 1999-2000</a></td>
+<td class="org-right">472</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/509_P1_final.pdf">Household Consumption of Various Goods and Services in India part 1, 2004-05</a></td>
+<td class="org-right">509</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/Corr_nss_rep_509_1june12.pdf">Household Consumption of Various Goods and Services in India part 1 Corrigendum, 2004-05</a></td>
+<td class="org-right">509 (corr)</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_541.pdf">Household Consumption of Various Goods and Services in India</a></td>
+<td class="org-right">541</td>
+<td class="org-right">66</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/Report_no558_rou68_30june14.pdf">Household Consumption of Various Goods and Services in India</a></td>
+<td class="org-right">558</td>
+<td class="org-right">68</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-org47e1dd7" class="outline-2">
+<h2 id="org47e1dd7">NSSO Reports on nutrient intake</h2>
+<div class="outline-text-2" id="text-org47e1dd7">
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subject</th>
+<th scope="col" class="org-left">Report number</th>
+<th scope="col" class="org-right">Round</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_238-V1.pdf">Calorie and protein values of food item consumed per diem per consumer unit in rural areas</a></td>
+<td class="org-left">238/V1</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_238-V2.pdf">Calorie and protein values of food item consumed per diem per consumer unit in rural areas</a></td>
+<td class="org-left">238/V2</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_258.pdf">A note on the procedure of estimation of calorie &amp; protein consumption level</a></td>
+<td class="org-left">258</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-4.pdf">Calorie and protein content of food items consumed per Diem per consumer unit in rural areas of Meghalaya, Goa &amp; Manipur and Urban areas of</a></td>
+<td class="org-left">258/4</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_258_5.pdf">Calorie and Protein content of food items consumed per diem per consumer unit in urban areas of Gujarat, Madhya Pradesh and Goa</a></td>
+<td class="org-left">258/5</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-6.pdf">Calorie and protein content of food items consumed per Diem per consumer unit in rural areas of Haryana, Jammu &amp; Kashmir, Punjab and Uttar</a></td>
+<td class="org-left">258/6</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-7.pdf">Calorie and protein content of food items consumed per Diem per consumer unit in rural areas of Andhra Pradesh, Kerala, Mysore, Tamil Nadu,</a></td>
+<td class="org-left">258/7</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-8.pdf">Calorie and protein content of food items consumed per Diem per consumer unit in rural areas of Andhra Pradesh, Kerala, Mysore, Tamil Nadu,</a></td>
+<td class="org-left">258/8</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-9.pdf">Calorie and protein content of food items consumed per Diem per consumer unit in rural areas of Andhra Pradesh, Kerala, Mysore, Tamil Nadu,</a></td>
+<td class="org-left">258/9</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-10.pdf">Calorie and protein content of food items consumed per Diem per consumer unit-All India(Rural)</a></td>
+<td class="org-left">258/10</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-11.pdf">Calorie and protein content of food items consumed per Diem per consumer unit-All India(Urban)</a></td>
+<td class="org-left">258/11</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_258-A.pdf">Procedure of estimation on caorie and consumption level from the information collected in consumer expenditure survey</a></td>
+<td class="org-left">258A</td>
+<td class="org-right">26</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_297.pdf">Per capita per diem intake of calorie, protein and fat</a></td>
+<td class="org-left">297</td>
+<td class="org-right">27</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_329.pdf">Per consumer unit per diem intake of nutrients</a></td>
+<td class="org-left">329</td>
+<td class="org-right">32</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_333.pdf">Pattern of consumer expenditure of households self employed in agriculture and of agriculture and rural labour households</a></td>
+<td class="org-left">333</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_353.pdf">Nutritional Intake of Population distributed over different expenditure class</a></td>
+<td class="org-left">353</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_356.pdf">Adjustment of calorie intake of meals consumed free and meal served to others</a></td>
+<td class="org-left">356</td>
+<td class="org-right">38</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/405_final.pdf">Nutritional intake in India</a></td>
+<td class="org-left">405</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/471_final.pdf">Nutritional Intake in India , 1999-2000</a></td>
+<td class="org-left">471</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_560_19dec14.pdf">Nutritional Intake in India, 2011-2012 – NSS 68th Round</a></td>
+<td class="org-left">560</td>
+<td class="org-right">68</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/513_final.pdf">Nutritional Intake in India</a></td>
+<td class="org-left">513</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_rep_540.pdf">Nutritional Intake in India</a></td>
+<td class="org-left">540</td>
+<td class="org-right">66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgcf03f0f" class="outline-2">
+<h2 id="orgcf03f0f">NSSO Reports on inadequacy of food intake</h2>
+<div class="outline-text-2" id="text-orgcf03f0f">
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subject</th>
+<th scope="col" class="org-right">Report number</th>
+<th scope="col" class="org-right">Round</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/466_final.pdf">Reported adequacy of Food Intake in India, 1999-2000</a></td>
+<td class="org-right">466</td>
+<td class="org-right">55</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/415_final.pdf">Reported adequacy of food intake in India, 1993-94</a></td>
+<td class="org-right">415</td>
+<td class="org-right">50</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/512_final_0.pdf">Perceived Adequacy of Food Consumption in Indian Households 2004-2005</a></td>
+<td class="org-right">512</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/ErratatoReportNo512.pdf">Perceived Adequacy of Food Consumption in Indian Households 2004-2005</a></td>
+<td class="org-right">512 Errata to Report No.512</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_547.pdf">Perceived Adequacy of Food Consumption in Indian Households</a></td>
+<td class="org-right">547</td>
+<td class="org-right">66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgb73066e" class="outline-2">
+<h2 id="orgb73066e">NSSO Reports on utilisation of public distribution system</h2>
+<div class="outline-text-2" id="text-orgb73066e">
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subject</th>
+<th scope="col" class="org-right">Report number</th>
+<th scope="col" class="org-right">Round</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/vol_I_510_final.pdf">Public Distribution System and Other Source of Households Consumption 2004 - 05</a></td>
+<td class="org-right">510 (vol-I)</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/vol_II_510_final.pdf">Public Distribution System and Other Source of Households Consumption 2004 - 05</a></td>
+<td class="org-right">510 (vol-II)</td>
+<td class="org-right">61</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_545.pdf">Public Distribution System and other Sources of Household Consumption</a></td>
+<td class="org-right">545</td>
+<td class="org-right">66</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/report_565_26june2015.pdf">Public Distribution System &amp; Other Sources of Household Consumer Expenditure, NSS 68th Round</a></td>
+<td class="org-right">565</td>
+<td class="org-right">68</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://mospi.nic.in/sites/default/files/publication_reports/nss_report_362.pdf">Utilization of Public distribution system</a></td>
+<td class="org-right">362</td>
+<td class="org-right">42</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

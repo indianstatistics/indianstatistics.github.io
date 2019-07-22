@@ -1,0 +1,4720 @@
+---
+layout: default
+title: "Agricultural Wages in India"
+date: 2014-07-30
+up: "/employment.html"
+home: "/index.html"
+---
+
+
+<p>
+&ldquo;Agricultural Wages in India&rdquo; are published annually by the
+Directorate of Economics and Statistics, Ministry of
+Agriculture. Agricultural Wages in India reports provide a long
+time-series of data on agricultural and rural wages. AWI data are
+provided for selected &ldquo;Centres&rdquo;, which are specific villages in
+selected districts. In most States, data are provided for five
+categories of agricultural workers: Ploughman, Sower, Weeder, Reaper
+and Harvester, Other agricultural labour, and Herdsmen. In addition,
+data are also provided for following categories of non-agricultural
+workers: Blacksmith, Carpenter, and Cobbler. The data are provided on
+a monthly basis. Annual series are created by taking a simple average
+of wages from July to June. For example, average annual wage for say
+1993-94 refers to a simple average of monthly wages from July 1993 to
+June 1994.
+</p>
+
+<p>
+Many studies have used AWI data to study trends in agricultural
+wages. These include
+\cite{jose1973wage,jose1974trends,jose1978real,josewages1988,chavanwages2006,krishnaji1971wages,acharya1989wages}.
+A discussion on quality and reliability of data from AWI can be seen
+in \cite{rao1972agricultural} and \cite{ghanekar1997wage}.
+</p>
+
+<p>
+Data from Agricultural Wages in India have been criticised for lack of
+rigour and uniformity in data collection. Some States do not provide
+data separately for different categories of agricultural workers and
+provide it only for &ldquo;Field labour&rdquo; as a whole. There are large gaps,
+both in terms of categories for which data are reported and months for
+which data are reported, which are indistinguishable from lack of
+existence of a particular category of workers in a given Centre at a
+particular point of time.  In other cases, month-by-month data are
+routinely reported for seasonal agricultural tasks for months in which
+the work does not take place at all. Centres are often changed,
+without any explanation.
+</p>
+
+<p>
+Directorate of Economics and Statistics asks the State Departments of
+Agriculture to provide data. Practically no instructions are provided
+on the concepts to be used in identifying different categories of
+workers, valuation of cash or kind, conversion of duration of work to
+standard 8-hour day, valuation of piece-rate wages or
+share-wages.
+</p>
+
+<p>
+Nor are there any guidelines on the methodology for data
+collection. In most States, the village-level revenue officials
+(patwari or equivalent) just report the numbers on the basis of their
+local knowledge and in view of the numbers reported in the past. Given
+that the revenue-officials primarily deal with landowners and
+cultivators, in most cases, these are likely to reflect
+wages-as-reported-by-employers, rather than
+wages-as-reported-by-workers. It is expected that employers
+over-report wages. This is likely to have a serious effect not just on
+the level of wages but also on the trends in wages.
+</p>
+
+<p>
+These caveats should be kept in mind while using AWI data and
+interpreting statistical results based on them.
+</p>
+
+<p>
+AWI data presented here were computerised by Yoshifumi Usami and
+pertain to only selected occupations. Data for women workers were
+computerised for sowers and harvesters. Data for male workers were
+computerised for ploughmen and harvesters. For States/districts where
+separate occupation-wise data were not available, data for field
+labour were computerised. In addition to these agricultural
+occupations, data on wages of carpenters (male) were also
+computerised.
+</p>
+
+<p>
+Download zipped csv file containing district-level data from
+<a href="datafiles/awi.zip">here</a>. Data taken from here should be cited as follows:
+</p>
+
+<p>
+Usami, Yoshifumi (2014), Agricultural Wages in India, 1973-74 to 1994-95,
+<i>Statistics on Indian Economy and Society</i>,
+<a href="http://www.indianstatistics.org/awi.html">http://www.indianstatistics.org/awi.html</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R" id="orgdb9a734">agrarian<span style="color: #8f5902; font-style: italic;">&lt;-</span>dbConnect(dbDriver(<span style="color: #8f5902; font-style: italic;">"MySQL"</span>),username=<span style="color: #8f5902; font-style: italic;">"pari"</span>,dbname=<span style="color: #8f5902; font-style: italic;">"agrarianindia"</span>,password=<span style="color: #8f5902; font-style: italic;">"vikas123"</span>)
+dbReadTable(agrarian,<span style="color: #8f5902; font-style: italic;">"awi"</span>)<span style="color: #8f5902; font-style: italic;">-&gt;</span>awi
+dbDisconnect(agrarian)
+write.table(awi,file=<span style="color: #8f5902; font-style: italic;">"../pub_exclude/awi.csv"</span>,sep=<span style="color: #8f5902; font-style: italic;">","</span>,row.names=F)
+system(<span style="color: #8f5902; font-style: italic;">"zip datafiles/awi.zip ../pub_exclude/awi.csv"</span>)
+melt(awi,id=c(<span style="color: #8f5902; font-style: italic;">"State"</span>,<span style="color: #8f5902; font-style: italic;">"District_cleaned"</span>,<span style="color: #8f5902; font-style: italic;">"Sex"</span>,<span style="color: #8f5902; font-style: italic;">"Occupation"</span>),m=<span style="color: #8f5902; font-style: italic;">"Year"</span>)<span style="color: #8f5902; font-style: italic;">-&gt;</span>a
+dcast(a,State+District_cleaned+Sex+Occupation~variable,min)<span style="color: #8f5902; font-style: italic;">-&gt;</span>a1
+names(a1)[5]<span style="color: #8f5902; font-style: italic;">&lt;-</span><span style="color: #8f5902; font-style: italic;">"yearmin"</span>
+dcast(a,State+District_cleaned+Sex+Occupation~variable,max)<span style="color: #8f5902; font-style: italic;">-&gt;</span>a2
+names(a2)[5]<span style="color: #8f5902; font-style: italic;">&lt;-</span><span style="color: #8f5902; font-style: italic;">"yearmax"</span>
+merge(a1,a2)<span style="color: #8f5902; font-style: italic;">-&gt;</span>a1
+paste(a1$yearmin,<span style="color: #8f5902; font-style: italic;">"-"</span>,a1$yearmax,sep=<span style="color: #8f5902; font-style: italic;">""</span>)<span style="color: #8f5902; font-style: italic;">-&gt;</span>a1$Years
+melt(a1,id=c(<span style="color: #8f5902; font-style: italic;">"State"</span>,<span style="color: #8f5902; font-style: italic;">"District_cleaned"</span>,<span style="color: #8f5902; font-style: italic;">"Sex"</span>,<span style="color: #8f5902; font-style: italic;">"Occupation"</span>),m=<span style="color: #8f5902; font-style: italic;">"Years"</span>)<span style="color: #8f5902; font-style: italic;">-&gt;</span>t
+dcast(t,State+District_cleaned~Sex+Occupation)<span style="color: #8f5902; font-style: italic;">-&gt;</span>t1
+t1[is.na(t1)]<span style="color: #8f5902; font-style: italic;">&lt;-</span><span style="color: #8f5902; font-style: italic;">""</span>
+names(t1)<span style="color: #8f5902; font-style: italic;">&lt;-</span>c(<span style="color: #8f5902; font-style: italic;">"State"</span>,<span style="color: #8f5902; font-style: italic;">"District"</span>,<span style="color: #8f5902; font-style: italic;">"Field labour (female)"</span>,<span style="color: #8f5902; font-style: italic;">"Harvester (female)"</span>,<span style="color: #8f5902; font-style: italic;">"Sower (female)"</span>,<span style="color: #8f5902; font-style: italic;">"Carpenter (male)"</span>,<span style="color: #8f5902; font-style: italic;">"Field labour (male)"</span>,<span style="color: #8f5902; font-style: italic;">"Harvester (male)"</span>, <span style="color: #8f5902; font-style: italic;">"Ploughman (male)"</span>)
+t1[,c(1,2,5,4,3,9,8,7,6)]
+
+</pre>
+</div>
+
+<table class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" class="table table-striped table-bordered table-condensed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> Years for which information is available in the dataset, by district</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">State</th>
+<th scope="col" class="org-left">District</th>
+<th scope="col" class="org-right">Sower (female)</th>
+<th scope="col" class="org-right">Harvester (female)</th>
+<th scope="col" class="org-right">Field labour (female)</th>
+<th scope="col" class="org-right">Ploughman (male)</th>
+<th scope="col" class="org-right">Harvester (male)</th>
+<th scope="col" class="org-right">Field labour (male)</th>
+<th scope="col" class="org-right">Carpenter (male)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Adilabad</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Anantapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Chittoor</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">East Godavari</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Guntur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Hyderabad</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1982</td>
+<td class="org-right">1973-1982</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Kadapa</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Karimnagar</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Khammam</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Krishna</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Kurnool</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Mahboobnagar</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Medak</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Nalgonda</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Nellore</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Nizamabad</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Ongale</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1975</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1975</td>
+<td class="org-right">1973-1975</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Prakasam</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">1975-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Ranga Reddy</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1981-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Srikakulam</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Visakhapatnam</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Vizianagaram</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">Warangal</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Andhra Pradesh</td>
+<td class="org-left">West Godavari</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Barpeta</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Checked</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Darrang</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Dhubri</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Dibrugarh</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Diphu</td>
+<td class="org-right">1976-1991</td>
+<td class="org-right">1986-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1982-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Goalpara 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1978</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Golaghat</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Gowahati</td>
+<td class="org-right">1976-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Guwahati</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Hailakandi</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Jorhat</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Kamrup Guwahati</td>
+<td class="org-right">1991-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">1994-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Karimganj</td>
+<td class="org-right">1974-1991</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1982-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Kokrajhar</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Mangaldoi</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Nagaon</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Nogaon</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1988</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">North Lakhimpur</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1981-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1981-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Sibsagar</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1984-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Silchar</td>
+<td class="org-right">1974-1983</td>
+<td class="org-right">1987-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Sonitpur</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1994</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Assam</td>
+<td class="org-left">Tezpur</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Araria</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Aurangabad</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Banka</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Begusarai</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Bhabhua</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">1993-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Bhagalpur</td>
+<td class="org-right">1982-1991</td>
+<td class="org-right">1982-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Bhojpur</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">1988-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Bokaro</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Buxar</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Chaibasa</td>
+<td class="org-right">1981-1981</td>
+<td class="org-right">1981-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1981</td>
+<td class="org-right">1980-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1987</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Chatra</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">1995-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Darbhanga</td>
+<td class="org-right">1975-1994</td>
+<td class="org-right">1977-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Devghar</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">1987-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Devghar</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Dhanbad</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Dumka</td>
+<td class="org-right">1983-1993</td>
+<td class="org-right">1987-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">East Champaran</td>
+<td class="org-right">1978-1990</td>
+<td class="org-right">1978-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1978-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">East Singhbhum</td>
+<td class="org-right">1993-1994</td>
+<td class="org-right">1993-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Gadwa  Plamu</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1992</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Garhwa</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Gaya</td>
+<td class="org-right">1976-1993</td>
+<td class="org-right">1976-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">1975-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Giridih</td>
+<td class="org-right">1975-1992</td>
+<td class="org-right">1975-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Godda</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Gopalganj</td>
+<td class="org-right">1988-1995</td>
+<td class="org-right">1988-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Gumla</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">1984-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Hazaribagh</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1983-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Jahanabad</td>
+<td class="org-right">1990-1994</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Katihar</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Khagaria</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Kishanganj</td>
+<td class="org-right">1994-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1991-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Lohardaga</td>
+<td class="org-right">1988-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Madhepura</td>
+<td class="org-right">1982-1994</td>
+<td class="org-right">1982-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1985-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Madhubani</td>
+<td class="org-right">1974-1991</td>
+<td class="org-right">1984-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Munger</td>
+<td class="org-right">1975-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Muzaffarpur</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Nalanda</td>
+<td class="org-right">1975-1993</td>
+<td class="org-right">1975-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1993</td>
+<td class="org-right">1974-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Nawada</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Palamu</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Patna</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Purnea</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Ranchi</td>
+<td class="org-right">1974-1993</td>
+<td class="org-right">1975-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1993</td>
+<td class="org-right">1975-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1990</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Rohtas</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1979-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Saharsa</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1990</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Sahebganj</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Samastipur</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Santhal Parganas</td>
+<td class="org-right">1975-1984</td>
+<td class="org-right">1975-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1986</td>
+<td class="org-right">1975-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1986</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Saran</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Singhbhum</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Sitamarhi</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Siwan</td>
+<td class="org-right">1979-1992</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Supaul</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Unidentified</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">1992-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1993</td>
+<td class="org-right">1992-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">Vaishali</td>
+<td class="org-right">1974-1990</td>
+<td class="org-right">1974-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">West Champaran</td>
+<td class="org-right">1975-1989</td>
+<td class="org-right">1977-1980</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1989</td>
+<td class="org-right">1977-1980</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1989</td>
+</tr>
+
+<tr>
+<td class="org-left">Bihar</td>
+<td class="org-left">West Singhbhum</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Ahmedabad</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1975-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Amreli</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1974-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Banaskantha</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Baroda</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Baroda 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1980</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Bharuch</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Bhavnagar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Dangs</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1975-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Gandhinagar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Jamnagar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Junagadh</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1974-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1982-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Kheda</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Kutch</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Mehsana</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Panchmahals</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Rajkot</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1975-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Sabarkantha</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Surat</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Surendranagar</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Gujarat</td>
+<td class="org-left">Valsad</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Ambala</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Bhiwani</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Faridabad</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">1980-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">1980-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1988</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Gurgaon</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Hisar</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1977-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Jind</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1983</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Kaithal</td>
+<td class="org-right">1994-1994</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Karnal</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Kurukshetra</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Mahendergarh</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Panipat</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Rewari</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Rohtak</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Sirsa</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Sonepat</td>
+<td class="org-right">1991-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1979</td>
+</tr>
+
+<tr>
+<td class="org-left">Haryana</td>
+<td class="org-left">Yamunanagar</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Bilaspur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1993</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Chamba</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1981-1994</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Hamirpur</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1983-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1994</td>
+<td class="org-right">1981-1992</td>
+<td class="org-right">1978-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Kangra</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1982-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Kinnaur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Kulu</td>
+<td class="org-right">1978-1994</td>
+<td class="org-right">1989-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1994</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">1978-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Lahaul Spiti</td>
+<td class="org-right">1989-1995</td>
+<td class="org-right">1989-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">1988-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Mandi</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Shimla</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Sirmaur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1981-1992</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Solan</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Himachal Pradesh</td>
+<td class="org-left">Una</td>
+<td class="org-right">1978-1989</td>
+<td class="org-right">1982-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Bangalore</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Bellary</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Chickmagalur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Chitradurga</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Hassan</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Kolar</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Mandya</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Mysore</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Shimoga</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Karnataka</td>
+<td class="org-left">Tumkur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Alappuzha</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1974</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Ernakulam</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1989</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Ernakulam 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Idukki</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Kannur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Kasaragode</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+<td class="org-right">1992-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Kollam</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1989-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Kottayam</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Kozhikode</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1974</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Malappuram</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1975-1975</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Palghat</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Pathanamthitta</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Thiruvananthapuram</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Thrissur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1976</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1976</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Kerala</td>
+<td class="org-left">Unidentified (Sagar)</td>
+<td class="org-right">1981-1984</td>
+<td class="org-right">1981-1984</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Balaghat</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Bastar</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Betul</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Bhind</td>
+<td class="org-right">1973-1987</td>
+<td class="org-right">1973-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Bhopal</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Bilaspur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Chhattarpur</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Chhindwara</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Damoh</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Datia</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Dewas</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Dhar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Durg</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Guna</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Gwalior</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Hoshangabad</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Indore</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Jabalpur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Jhabua</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Khandwa</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Khargone</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Mandla</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Mandsaur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Morena</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Narsinghpur</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Panna</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Raigarh</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Raipur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Raisen</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Rajgarh</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Rajnandgaon</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Ratlam</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Rewa</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Sagar</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Sarguja</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Satna</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Sehore</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Seoni</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1984</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Shahdol</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Shajapur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Shivpuri</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Sidhi</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Sivni</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Tikamgarh</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Ujjain</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Madhya Pradesh</td>
+<td class="org-left">Vidisha</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Ahmednagar</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1994</td>
+<td class="org-right">1977-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Akola</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Amravati</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Amravati 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Bhandara</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Bhandara 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1981</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Buldhana</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1990-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Chandrapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Chandrapur 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1978</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Dhule</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1985</td>
+<td class="org-right">1973-1985</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Jalgaon</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1975</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1982</td>
+<td class="org-right">1973-1982</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Kolaba</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1984</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Kolhapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Latur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1983-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Nagpur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Nagpur 1</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1985</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Nagpur 2</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1980</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Nasik</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">North Solapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Osmanabad</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1992</td>
+<td class="org-right">1983-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Parbhani</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1982</td>
+<td class="org-right">1973-1982</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Raigad</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1986</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Raigadh</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1986</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Ratnagiri</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Sangli</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1990-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">1981-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Satara</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1995</td>
+<td class="org-right">1977-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Solapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1981</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Solapur North</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1981-1995</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Solapur South</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Thane</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Unidentified (Jaoli)</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1980</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1980</td>
+<td class="org-right">1980-1980</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Unidentified (Jhana)</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1980</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Unidentified (Khatar)</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1980</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1980-1980</td>
+<td class="org-right">1980-1980</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Wardha</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">Yavatmal</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1982</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Maharashtra</td>
+<td class="org-left">kolaba</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1984</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1984</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Anugol</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Balangir</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Balasore</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Bargarh</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Bhadrak</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Boudha</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Cuttack</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Deogarh</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Dhenkanal</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Ganjam</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Ganpati</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Jagatsinghpur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Jajpur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Jharsuguda</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Kalahandi</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1980-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Kendrapara</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Keonjhar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Khurda</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Koraput</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Malkagiri</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Mayurbhanj</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Navagarh</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Nawapara</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Nawarangpur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Phulbani</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Puri</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Rayagada</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Sambalpur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Sonapur</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Orissa</td>
+<td class="org-left">Sundargarh</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Amritsar</td>
+<td class="org-right">1979-1986</td>
+<td class="org-right">1979-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1993</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Bhatinda</td>
+<td class="org-right">1979-1981</td>
+<td class="org-right">1979-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Faridkot</td>
+<td class="org-right">1979-1990</td>
+<td class="org-right">1979-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Fatehgarh Sahib</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Ferozepur</td>
+<td class="org-right">1979-1981</td>
+<td class="org-right">1979-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Gurdaspur</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">1979-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Hoshiarpur</td>
+<td class="org-right">1974-1981</td>
+<td class="org-right">1979-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1987</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Jalandhar</td>
+<td class="org-right">1979-1989</td>
+<td class="org-right">1979-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Kapurthala</td>
+<td class="org-right">1979-1981</td>
+<td class="org-right">1977-1983</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Ludhiana</td>
+<td class="org-right">1979-1981</td>
+<td class="org-right">1979-1983</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1989</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Mansa</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1994-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Patiala</td>
+<td class="org-right">1973-1981</td>
+<td class="org-right">1974-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Rupnagar</td>
+<td class="org-right">1974-1981</td>
+<td class="org-right">1974-1983</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Punjab</td>
+<td class="org-left">Sangrur</td>
+<td class="org-right">1979-1985</td>
+<td class="org-right">1979-1983</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Ajmer</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Alwar</td>
+<td class="org-right">1976-1990</td>
+<td class="org-right">1976-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1975-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Banswara</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Baran</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">1992-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1992-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Barmer</td>
+<td class="org-right">1989-1989</td>
+<td class="org-right">1975-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Bharatpur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Bhilwara</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Bikaner</td>
+<td class="org-right">1987-1988</td>
+<td class="org-right">1983-1984</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1985</td>
+<td class="org-right">1980-1985</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Bundi</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Chittorgarh</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Churu</td>
+<td class="org-right">1974-1980</td>
+<td class="org-right">1978-1986</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Dungarpur</td>
+<td class="org-right">1975-1994</td>
+<td class="org-right">1975-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Ganganagar</td>
+<td class="org-right">1978-1990</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jaipur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jaisalmer</td>
+<td class="org-right">1980-1980</td>
+<td class="org-right">1982-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1985</td>
+<td class="org-right">1978-1982</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jalore</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jhalawar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jhunjunu</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Jodhpur</td>
+<td class="org-right">1976-1995</td>
+<td class="org-right">1975-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Kota</td>
+<td class="org-right">1973-1988</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Nagaur</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Pali</td>
+<td class="org-right">1974-1981</td>
+<td class="org-right">1974-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Sawai Madhopur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Sikar</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Sirohi</td>
+<td class="org-right">1977-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1977-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Tonk</td>
+<td class="org-right">1978-1993</td>
+<td class="org-right">1978-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1987</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Rajasthan</td>
+<td class="org-left">Udaipur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">2 Ramanathapuram</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1989-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1992</td>
+<td class="org-right">1988-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1992</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">3 Ramanathapuram</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Anna</td>
+<td class="org-right">1985-1989</td>
+<td class="org-right">1987-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1989</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Chengai M G R</td>
+<td class="org-right">1993-1993</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Chengai Mgr</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1983-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Chengalpattu</td>
+<td class="org-right">1973-1981</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1989</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Chidambaram</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">1988-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">1987-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Coimbatore</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Dharmapuri</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Dindigul</td>
+<td class="org-right">1989-1994</td>
+<td class="org-right">1992-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1994</td>
+<td class="org-right">1992-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1993-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Kanniyakumari</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Madurai</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">---giris</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1991</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">North Arcot</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Periyar</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1979-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Pudukkottai</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1979-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Ramanathapuram</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1974-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Salem</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">South Arcot</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Thanjavur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Thirunelveli</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Thiruvannamalai</td>
+<td class="org-right">1994-1995</td>
+<td class="org-right">1993-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">1991-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1991-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Tiruchirapalli</td>
+<td class="org-right">1973-1993</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1990</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">Tamil Nadu</td>
+<td class="org-left">Virudhanagar</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1995</td>
+<td class="org-right">1987-1993</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1985-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Agra</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1975-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Allahabad</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Bareilly</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1974-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Faizabad</td>
+<td class="org-right">1973-1992</td>
+<td class="org-right">1974-1992</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1993</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Gorakhpur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Jhansi</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Lucknow</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Meerut</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1974-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Nainital</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">Uttar Pradesh</td>
+<td class="org-left">Varanasi</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">24 Parganas</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Bankura</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Barddhaman</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Birbhum</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1986-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Cooch Behar</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Darjeeling</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Hooghly</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Howrah</td>
+<td class="org-right">1975-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1988-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1988-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Jalpaiguri</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1994</td>
+<td class="org-right">1987-1994</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1994</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Malda</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1978-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Medinipur East</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Medinipur West</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Murshidabad</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1987-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1987-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Nadia</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">North 24 Parganas</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1982-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">Purulia</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">South 24 Parganas</td>
+<td class="org-right">1974-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1988-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1988-1995</td>
+</tr>
+
+<tr>
+<td class="org-left">West Bengal</td>
+<td class="org-left">West Dinajpur</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1973-1995</td>
+<td class="org-right">1986-1995</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">1986-1995</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Download zipped csv file containing data from <a href="datafiles/awi.zip">here</a>. 
+</p>

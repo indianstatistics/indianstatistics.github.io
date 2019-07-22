@@ -1,0 +1,8 @@
+name: Statistics on Indian Economy and Society
+url: "http://www.indianstatistics.org"
+markdown: redcarpet
+highlighter: pygments
+comments: true
+minItemsToShowToc: 0
+plugins:
+  - jekyll-sitemap

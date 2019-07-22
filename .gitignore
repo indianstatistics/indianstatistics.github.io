@@ -1,0 +1,5 @@
+scripts/*
+*.gz
+*.zip
+*.pdf
+*.docx
